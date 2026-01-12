@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, flash, render_template, request, redirect, url_for
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = b'what yes'
 
 cars =[
     { 'id': 1, 'brand': 'Toyota', 'model': 'Yaris Ativ', 'year': 2020 , 'price': 559000},
@@ -32,5 +33,22 @@ def new_car():
         car = { 'id': id, 'brand': brand, 'model': model, 'year': year , 'price': price}
         cars.append(car)
 
+        flash('Add New Car Successfully!!!', 'success')
+        return redirect(url_for('all_car'))
+
     return render_template('cars/new_car.html',
                            title='New Car Page')
+
+@app.route('/car/<int:id>/delete')
+def delete_car(id):
+    for car in cars:
+       if id == car['id']:
+           cars.remove(car)
+           break
+    flash('Delete Car Successfully!!!', 'success')
+    return redirect(url_for('all_car'))
+
+@app.route('/car/<int:id>/edit')
+def edit_car(id):
+   return render_template('cars/edit_car.html',
+                          title='Edit Car Page')
