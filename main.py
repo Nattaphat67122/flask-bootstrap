@@ -16,10 +16,10 @@ def index():
 @app.route('/cars', methods=['GET', 'POST'])
 def all_cars():
   if request.method == 'POST':
-    brand = request.form['brand']
+    brand = request.form['brand'].lower()
     tmp_cars = []
     for car in cars:
-      if brand in car['brand']:
+      if brand in car['brand'].lower():
         tmp_cars.append(car)
     # cars = tmp_cars
     return render_template('cars/cars.html', 
